@@ -93,7 +93,7 @@ export default function Home() {
   }
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-start justify-items-center min-h-screen py-3 px-3 pb-20 gap-16 sm:p-20">
+    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-start justify-items-center py-3 px-3 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <form action={handleSubmit} className="[&>*]:mt-2">
           <Input name="name" placeholder="Artikkelin nimi" />
@@ -113,11 +113,7 @@ export default function Home() {
           <Button type="submit">Lisää</Button>
         </form>
 
-        {items.length > 0 ? (
-          <DataTable columns={columns} data={items} />
-        ) : (
-          <p>Mitään ei löytynyt :&#40;</p>
-        )}
+        <DataTable columns={columns} data={items} />
       </main>
     </div>
   );
