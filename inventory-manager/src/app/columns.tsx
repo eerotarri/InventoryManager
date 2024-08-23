@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 
 const HEADER_TEXT_COLOR = "text-slate-700";
@@ -23,8 +24,20 @@ export const columns: ColumnDef<FridgeItem>[] = [
     accessorKey: "suffix",
     header: () => <div className={`${HEADER_TEXT_COLOR}`}>Yksikkö</div>,
   },
-  // {
-  //   accessorKey: "expirationdate",
-  //   header: () => <div className={`${HEADER_TEXT_COLOR}`}>Viim. käyttöpäivä</div>,
-  // },
+  {
+    accessorKey: "delete",
+    cell: ({ row }) => {
+      async function deleteItem() {
+        const response = await fetch(`/api/items/${row.original.id}`, {
+          method: "DELETE",
+        });
+      }
+
+      return (
+        <Button variant="destructive" onClick={deleteItem}>
+          DEL
+        </Button>
+      );
+    },
+  },
 ];

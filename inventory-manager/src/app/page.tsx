@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ArticleForm } from "@/components/ui/article-form";
+// import { ArticleForm } from "@/components/ui/article-form";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
@@ -20,39 +12,84 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const sampleItems: FridgeItem[] = [
-  {
-    id: "1",
-    name: "Maito",
-    quantity: 2,
-    suffix: "l",
-    expirationDate: new Date("2024-08-25"),
-  },
-  { id: "2", name: "Kananmuna", quantity: 12, suffix: "kpl" },
-  {
-    id: "3",
-    name: "Juusto",
-    quantity: 1,
-    suffix: "kpl",
-    expirationDate: new Date("2024-09-01"),
-  },
-];
+// const testItems = [
+//   {
+//     id: "1",
+//     name: "Apple",
+//     quantity: 0,
+//     suffix: "kpl",
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+//   {
+//     id: "2",
+//     name: "Banana",
+//     quantity: 1,
+//     suffix: "kpl",
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+//   {
+//     id: "3",
+//     name: "Orange",
+//     quantity: 8,
+//     suffix: "kpl",
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+//   {
+//     id: "4",
+//     name: "Grapes",
+//     quantity: 5,
+//     suffix: "kpl",
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+// ];
 
 export default function Home() {
-  const [items, setItems] = useState<FridgeItem[]>(sampleItems);
+  const [items, setItems] = useState<FridgeItem[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("/api/items");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log(data); // Handle the data as needed
+
+        setItems(data);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   function handleSubmit(e: FormData) {
-    setItems([
-      ...items,
-      {
-        id: (items.length + 1).toString(),
-        name: e.get("name") as string,
-        quantity: parseFloat(e.get("quantity") as string),
-        suffix: e.get("unit") as string,
+    const newItem = {
+      id: (items.length + 1).toString(),
+      name: e.get("name") as string,
+      quantity: parseFloat(e.get("quantity") as string),
+      suffix: e.get("unit") as "l" | "kpl" | "kg",
+      createdAt: new Date(),
+      updatedAt: new Date(), // Kind of a hack, but it works for now
+    };
+
+    const response = fetch("/api/items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ]);
+      body: JSON.stringify(newItem),
+    });
+
+    setItems([...items, newItem]);
   }
 
   return (
@@ -76,7 +113,11 @@ export default function Home() {
           <Button type="submit">Lisää</Button>
         </form>
 
-        <DataTable columns={columns} data={items} />
+        {items.length > 0 ? (
+          <DataTable columns={columns} data={items} />
+        ) : (
+          <p>Mitään ei löytynyt :&#40;</p>
+        )}
       </main>
     </div>
   );
