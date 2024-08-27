@@ -13,41 +13,43 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import test from "node:test";
+import { set } from "react-hook-form";
 
-// const testItems = [
-//   {
-//     id: "1",
-//     name: "Apple",
-//     quantity: 0,
-//     suffix: "kpl",
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//   },
-//   {
-//     id: "2",
-//     name: "Banana",
-//     quantity: 1,
-//     suffix: "kpl",
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//   },
-//   {
-//     id: "3",
-//     name: "Orange",
-//     quantity: 8,
-//     suffix: "kpl",
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//   },
-//   {
-//     id: "4",
-//     name: "Grapes",
-//     quantity: 5,
-//     suffix: "kpl",
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//   },
-// ];
+const testItems: FridgeItem[] = [
+  {
+    id: "1",
+    name: "This",
+    quantity: 0,
+    suffix: "kpl",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "2",
+    name: "Is",
+    quantity: 1,
+    suffix: "kpl",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "3",
+    name: "Test",
+    quantity: 8,
+    suffix: "kpl",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "4",
+    name: "Data",
+    quantity: 5,
+    suffix: "kpl",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
 
 export default function Home() {
   const [items, setItems] = useState<FridgeItem[]>([]);
@@ -59,8 +61,8 @@ export default function Home() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        console.log(data); // Handle the data as needed
+        const data = (await response.json()) as FridgeItem[];
+        console.log("Test data: ", data); // Handle the data as needed
 
         setItems(data);
       } catch (error) {
@@ -68,6 +70,7 @@ export default function Home() {
       }
     }
 
+    setItems(testItems);
     fetchData();
   }, []);
 

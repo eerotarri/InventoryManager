@@ -10,6 +10,8 @@ export async function GET(request: Request) {
 
   const data = await getItems();
 
+  console.log("Data from DB:", data);
+
   return new Response(JSON.stringify(data));
 }
 

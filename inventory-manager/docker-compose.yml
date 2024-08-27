@@ -1,9 +1,7 @@
 version: '3.8'
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: inventory-manager:0.2
     ports:
       - 3002:3000
     volumes:
