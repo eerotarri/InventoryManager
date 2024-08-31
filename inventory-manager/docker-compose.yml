@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  web:
+    image: inventory-manager:latest
+    ports:
+      - 3002:3000
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - DATABASE_CONNECTION_STRING=mysql://root:root@db:3306/inventory_db
+    restart: always
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: inventory_db
+      MYSQL_USER: db
+      MYSQL_PASSWORD: eero123
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data:/var/lib/mysql
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: eero123
+    ports:
+      - "3003:80"
+    depends_on:
+      - db
+    restart: always

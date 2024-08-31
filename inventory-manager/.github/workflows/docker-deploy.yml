@@ -1,0 +1,23 @@
+name: InventoryManagement Docker Compose Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH into server and run docker compose up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/wtf/App/InventoryManager/inventory-manager
+            sudo docker build -t inventory-manager:latest .
+            docker-compose up --build
