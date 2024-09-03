@@ -2,8 +2,8 @@
 
 // import { ArticleForm } from "@/components/ui/article-form";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "./data-table";
-import { columns } from "./columns";
+import { DataTable } from "./_components/data-table";
+import { columns } from "./_components/columns";
 import { Input } from "@/components/ui/input";
 import {
   Select,
