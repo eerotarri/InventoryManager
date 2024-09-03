@@ -1,16 +1,9 @@
-import {
-  createTableIfNotExists,
-  deleteItem,
-  getItems,
-  insertItem,
-} from "@/lib/dbutils";
+import { fridgeItemRepository } from "@/lib/infrastructure/repositories/fridge-items.repository";
 
 export async function GET(request: Request) {
-  await createTableIfNotExists();
+  await fridgeItemRepository.createFridgeItemTable();
 
-  const data = await getItems();
-
-  console.log("Data from DB:", data);
+  const data = await fridgeItemRepository.getFridgeItems();
 
   return new Response(JSON.stringify(data));
 }
@@ -18,7 +11,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const res: FridgeItem = await request.json();
 
-  insertItem(res);
+  const data = await fridgeItemRepository.addFridgeItem(res);
 
-  return Response.json({ res, msg: "Item added" });
+  return Response.json({ res, msg: "Item added probably", data });
 }

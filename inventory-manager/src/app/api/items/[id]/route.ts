@@ -1,4 +1,4 @@
-import { deleteItem } from "@/lib/dbutils";
+import { fridgeItemRepository } from "@/lib/infrastructure/repositories/fridge-items.repository";
 
 export async function DELETE(
   request: Request,
@@ -8,7 +8,7 @@ export async function DELETE(
 
   console.log(`ID in route handler: ${id}`);
 
-  deleteItem(id as string);
+  fridgeItemRepository.deleteFridgeItem(id);
 
   return new Response("Item deleted");
 }
