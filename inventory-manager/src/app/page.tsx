@@ -13,43 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import test from "node:test";
-import { set } from "react-hook-form";
 
-const testItems: FridgeItem[] = [
-  {
-    id: "1",
-    name: "This",
-    quantity: 0,
-    suffix: "kpl",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "2",
-    name: "Is",
-    quantity: 1,
-    suffix: "kpl",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "3",
-    name: "Test",
-    quantity: 8,
-    suffix: "kpl",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "4",
-    name: "Data",
-    quantity: 5,
-    suffix: "kpl",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+
 
 export default function Home() {
   const [items, setItems] = useState<FridgeItem[]>([]);
@@ -62,15 +27,13 @@ export default function Home() {
           throw new Error("Network response was not ok");
         }
         const data = (await response.json()) as FridgeItem[];
-        console.log("Test data: ", data); // Handle the data as needed
 
         setItems(data);
       } catch (error) {
         console.error("There was a problem with the fetch operation:", error);
       }
     }
-
-    setItems(testItems);
+    console.log(process.env.NODE_ENV);
     fetchData();
   }, []);
 

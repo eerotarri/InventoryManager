@@ -1,44 +1,47 @@
 import mysql from "mysql2/promise";
-import dotenv from "dotenv";
 import { IFridgeItemRepository } from "@/lib/application/repositories/fridge-items.repository.interface";
 
-dotenv.config();
+export class FridgeItemRepository implements IFridgeItemRepository {
+  private databaseUrl: string;
 
-export const fridgeItemRepository: IFridgeItemRepository = {
-  createFridgeItemTable: async function (): Promise<void> {
-    const connection = await mysql.createConnection(
-      process.env.DATABASE_URL ?? ""
-    );
+  constructor(databaseUrl: string) {
+    this.databaseUrl = databaseUrl;
+  }
+
+  private async getConnection() {
+    return mysql.createConnection(this.databaseUrl);
+  }
+
+  async createFridgeItemTable(): Promise<void> {
+    const connection = await this.getConnection();
 
     const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS items (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          name VARCHAR(255) NOT NULL,
-          quantity INT NOT NULL,
-          suffix ENUM('kpl', 'l', 'kg') NOT NULL,
-          createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        );
-      `;
+      CREATE TABLE IF NOT EXISTS items (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        quantity INT NOT NULL,
+        suffix ENUM('kpl', 'l', 'kg') NOT NULL,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      );
+    `;
 
     try {
-      connection.query(createTableQuery);
-      connection.end();
+      await connection.query(createTableQuery);
       console.log('Table "items" created or already exists.');
     } catch (error) {
       console.error("Error creating table:", error);
     } finally {
-      connection.end();
+      await connection.end();
     }
-  },
-  getFridgeItems: async function (): Promise<FridgeItem[] | undefined> {
-    const connection = await mysql.createConnection(
-      process.env.DATABASE_URL ?? ""
-    );
+  }
+
+  async getFridgeItems(): Promise<FridgeItem[] | undefined> {
+    const connection = await this.getConnection();
 
     const getItemsQuery = `
-            SELECT * FROM items;
-        `;
+      SELECT * FROM items;
+    `;
 
     try {
       const [rows] = await connection.query(getItemsQuery);
@@ -47,20 +50,19 @@ export const fridgeItemRepository: IFridgeItemRepository = {
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {
-      connection.end();
+      await connection.end();
     }
 
     return undefined;
-  },
-  addFridgeItem: async function (fridgeItem: FridgeItem): Promise<void> {
-    const connection = await mysql.createConnection(
-      process.env.DATABASE_URL ?? ""
-    );
+  }
+
+  async addFridgeItem(fridgeItem: FridgeItem): Promise<void> {
+    const connection = await this.getConnection();
 
     const insertItemQuery = `
-            INSERT INTO items (name, quantity, suffix)
-            VALUES (?, ?, ?);
-        `;
+      INSERT INTO items (name, quantity, suffix)
+      VALUES (?, ?, ?);
+    `;
 
     try {
       await connection.query(insertItemQuery, [
@@ -72,19 +74,18 @@ export const fridgeItemRepository: IFridgeItemRepository = {
     } catch (error) {
       console.error("Error inserting item:", error);
     } finally {
-      connection.end();
+      await connection.end();
     }
-  },
-  updateFridgeItem: async function (fridgeItem: FridgeItem): Promise<void> {
-    const connection = await mysql.createConnection(
-      process.env.DATABASE_URL ?? ""
-    );
+  }
+
+  async updateFridgeItem(fridgeItem: FridgeItem): Promise<void> {
+    const connection = await this.getConnection();
 
     const updateItemQuery = `
-            UPDATE items
-            SET name = ?, quantity = ?, suffix = ?
-            WHERE id = ?;
-        `;
+      UPDATE items
+      SET name = ?, quantity = ?, suffix = ?
+      WHERE id = ?;
+    `;
 
     try {
       await connection.query(updateItemQuery, [
@@ -97,17 +98,16 @@ export const fridgeItemRepository: IFridgeItemRepository = {
     } catch (error) {
       console.error("Error updating item:", error);
     } finally {
-      connection.end();
+      await connection.end();
     }
-  },
-  deleteFridgeItem: async function (id: string): Promise<void> {
-    const connection = await mysql.createConnection(
-      process.env.DATABASE_URL ?? ""
-    );
+  }
+
+  async deleteFridgeItem(id: string): Promise<void> {
+    const connection = await this.getConnection();
 
     const deleteItemQuery = `
-            DELETE FROM items WHERE id = ?;
-        `;
+      DELETE FROM items WHERE id = ?;
+    `;
 
     try {
       await connection.query(deleteItemQuery, [id]);
@@ -115,7 +115,7 @@ export const fridgeItemRepository: IFridgeItemRepository = {
     } catch (error) {
       console.error("Error deleting item:", error);
     } finally {
-      connection.end();
+      await connection.end();
     }
-  },
-};
+  }
+}
