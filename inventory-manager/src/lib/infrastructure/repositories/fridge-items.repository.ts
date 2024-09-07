@@ -1,5 +1,6 @@
 import mysql from "mysql2/promise";
 import { IFridgeItemRepository } from "@/lib/application/repositories/fridge-items.repository.interface";
+import { FridgeItem, InsertFridgeItem } from "@/lib/entities/models/fridge-item";
 
 export class FridgeItemRepository implements IFridgeItemRepository {
   private databaseUrl: string;
@@ -56,7 +57,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     return undefined;
   }
 
-  async addFridgeItem(fridgeItem: FridgeItem): Promise<void> {
+  async addFridgeItem(fridgeItem: InsertFridgeItem): Promise<FridgeItem> {
     const connection = await this.getConnection();
 
     const insertItemQuery = `
@@ -65,17 +66,20 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     `;
 
     try {
-      await connection.query(insertItemQuery, [
+      const item = await connection.query(insertItemQuery, [
         fridgeItem.name,
         fridgeItem.quantity,
         fridgeItem.suffix,
       ]);
       console.log("Item inserted successfully.");
+      return item[0] as FridgeItem;
     } catch (error) {
       console.error("Error inserting item:", error);
     } finally {
       await connection.end();
     }
+
+
   }
 
   async updateFridgeItem(fridgeItem: FridgeItem): Promise<void> {

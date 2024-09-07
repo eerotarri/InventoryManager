@@ -1,4 +1,5 @@
 import { IFridgeItemRepository } from '@/lib/application/repositories/fridge-items.repository.interface';
+import { FridgeItem } from '@/lib/entities/models/fridge-item';
 
 export class MockFridgeItemRepository implements IFridgeItemRepository {
     private fridgeItems: FridgeItem[] = [];
@@ -30,8 +31,9 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
         return this.fridgeItems;
     }
 
-    async addFridgeItem(fridgeItem: FridgeItem): Promise<void> {
+    async addFridgeItem(fridgeItem: FridgeItem): Promise<FridgeItem> {
         this.fridgeItems.push(fridgeItem);
+        return fridgeItem;
     }
 
     async updateFridgeItem(updatedFridgeItem: FridgeItem): Promise<void> {

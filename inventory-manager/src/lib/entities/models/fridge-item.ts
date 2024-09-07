@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const fridgeItemSchema = z.object({
+export const fridgeItemSchema = z.object({
   id: z.string(),
   name: z.string().min(1),
   quantity: z.number().min(0),
@@ -11,7 +11,7 @@ const fridgeItemSchema = z.object({
 
 export type FridgeItem = z.infer<typeof fridgeItemSchema>;
 
-const insertFridgeItemSchema = fridgeItemSchema.pick({
+export const insertFridgeItemSchema = fridgeItemSchema.pick({
   name: true,
   quantity: true,
   suffix: true,

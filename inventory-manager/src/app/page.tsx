@@ -13,7 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-
+import { FridgeItem } from "@/lib/entities/models/fridge-item";
+import { createFridgeItemAction } from "./actions";
 
 
 export default function Home() {
@@ -37,31 +38,11 @@ export default function Home() {
     fetchData();
   }, []);
 
-  function handleSubmit(e: FormData) {
-    const newItem = {
-      id: (items.length + 1).toString(),
-      name: e.get("name") as string,
-      quantity: parseFloat(e.get("quantity") as string),
-      suffix: e.get("unit") as "l" | "kpl" | "kg",
-      createdAt: new Date(),
-      updatedAt: new Date(), // Kind of a hack, but it works for now
-    };
-
-    const response = fetch("/api/items", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newItem),
-    });
-
-    setItems([...items, newItem]);
-  }
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-start justify-items-center py-3 px-3 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <form action={handleSubmit} className="[&>*]:mt-2">
+        <form action={createFridgeItemAction} className="[&>*]:mt-2">
           <Input name="name" placeholder="Artikkelin nimi" />
           <div className="flex">
             <Input name="quantity" placeholder="Määrä" />
