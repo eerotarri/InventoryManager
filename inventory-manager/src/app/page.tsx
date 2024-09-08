@@ -2,7 +2,7 @@
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
 import { unstable_noStore } from "next/cache";
-import { getFridgeItemsController } from "@/lib/interface-adapters/controllers/fridge-items/get-fridge-items-controller";
+import { getFridgeItemsController } from "@/lib/interface-adapters/controllers/fridge-items/get-fridge-items.controller";
 import Form from "./_components/form";
 
 async function getFridgeItems() {

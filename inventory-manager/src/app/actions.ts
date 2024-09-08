@@ -2,7 +2,7 @@
 
 import { InputParseError } from "@/lib/entities/errors/common";
 import { InsertFridgeItem } from "@/lib/entities/models/fridge-item";
-import { createFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/create-fridge-item-controller";
+import { createFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/create-fridge-item.controller";
 import { deleteFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/delete-fridge-item.controller";
 import { revalidatePath } from "next/cache";
 
