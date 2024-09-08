@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { FridgeItem } from "@/lib/entities/models/fridge-item";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
