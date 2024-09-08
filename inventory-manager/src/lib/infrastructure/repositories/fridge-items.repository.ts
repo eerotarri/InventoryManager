@@ -1,12 +1,26 @@
 import mysql from "mysql2/promise";
 import { IFridgeItemRepository } from "@/lib/application/repositories/fridge-items.repository.interface";
-import { FridgeItem, InsertFridgeItem } from "@/lib/entities/models/fridge-item";
+import {
+  FridgeItem,
+  InsertFridgeItem,
+} from "@/lib/entities/models/fridge-item";
 
 export class FridgeItemRepository implements IFridgeItemRepository {
-  private databaseUrl: string;
+  private databaseUrl: string = process.env.DATABASE_URL as string;
 
-  constructor(databaseUrl: string) {
-    this.databaseUrl = databaseUrl;
+  // Static instance property to hold the singleton instance
+  private static instance: FridgeItemRepository;
+
+  // Private constructor to prevent direct instantiation
+  private constructor() {}
+
+  // Public static method to provide access to the singleton instance
+  public static getInstance(): FridgeItemRepository {
+    if (!FridgeItemRepository.instance) {
+      FridgeItemRepository.instance = new FridgeItemRepository();
+      FridgeItemRepository.instance.createFridgeItemTable(); // Initialize with mock data
+    }
+    return FridgeItemRepository.instance;
   }
 
   private async getConnection() {
@@ -57,7 +71,9 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     return undefined;
   }
 
-  async addFridgeItem(fridgeItem: InsertFridgeItem): Promise<FridgeItem> {
+  async addFridgeItem(
+    fridgeItem: InsertFridgeItem
+  ): Promise<FridgeItem | undefined> {
     const connection = await this.getConnection();
 
     const insertItemQuery = `
@@ -71,15 +87,12 @@ export class FridgeItemRepository implements IFridgeItemRepository {
         fridgeItem.quantity,
         fridgeItem.suffix,
       ]);
-      console.log("Item inserted successfully.");
-      return item[0] as FridgeItem;
     } catch (error) {
       console.error("Error inserting item:", error);
     } finally {
       await connection.end();
     }
-
-
+    return undefined;
   }
 
   async updateFridgeItem(fridgeItem: FridgeItem): Promise<void> {
