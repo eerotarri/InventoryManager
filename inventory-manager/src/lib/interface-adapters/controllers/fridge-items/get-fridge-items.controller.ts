@@ -1,4 +1,4 @@
-import { getFridgeItemsUseCase } from "@/lib/application/use_cases/get-fridge-items-use-case";
+import { getFridgeItemsUseCase } from "@/lib/application/use_cases/get-fridge-items.use-case";
 import { FridgeItem } from "@/lib/entities/models/fridge-item";
 
 function presenter(fridgeItems: FridgeItem[]) {
