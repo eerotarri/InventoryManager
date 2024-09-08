@@ -1,7 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { FridgeItem } from "@/lib/entities/models/fridge-item";
+import { deleteFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/delete-fridge-item.controller";
 import { ColumnDef } from "@tanstack/react-table";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/dist/server/api-utils";
+import { deleteFridgeItemAction } from "../actions";
 
 const HEADER_TEXT_COLOR = "text-slate-700";
 
@@ -27,16 +32,12 @@ export const columns: ColumnDef<FridgeItem>[] = [
   {
     accessorKey: "delete",
     cell: ({ row }) => {
-      async function deleteItem() {
-        const response = await fetch(`/api/items/${row.original.id}`, {
-          method: "DELETE",
-        });
-      }
-
       return (
-        <Button variant="destructive" onClick={deleteItem}>
-          DEL
-        </Button>
+        <form action={deleteFridgeItemAction}>
+          {/* This is a hidden input field to send the id to the server */}
+          <input type="hidden" name="id" value={row.original.id} />
+          <Button variant="destructive">DEL</Button>
+        </form>
       );
     },
   },
