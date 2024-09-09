@@ -1,5 +1,5 @@
 # Use an official Python runtime as the base image
-FROM node:20.17
+FROM node:20.17-alpine
 
 # Set the working directory in the container
 WORKDIR /app

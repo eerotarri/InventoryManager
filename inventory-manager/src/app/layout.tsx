@@ -29,6 +29,17 @@ export default function RootLayout({
         className={`bg-[#ac8968] ${geistSans.variable} ${geistMono.variable}`}
       >
         {children}
+        <p
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            textAlign: "center",
+          }}
+        >
+          {packageJson.version}
+        </p>
       </body>
     </html>
   );
