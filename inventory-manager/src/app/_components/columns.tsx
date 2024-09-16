@@ -33,9 +33,7 @@ export const columns: ColumnDef<FridgeItem>[] = [
     accessorKey: "delete",
     cell: ({ row }) => {
       return (
-        <form action={deleteFridgeItemAction}>
-          {/* This is a hidden input field to send the id to the server */}
-          <input type="hidden" name="id" value={row.original.id} />
+        <form action={deleteFridgeItemAction.bind(null, row.original.id)}>
           <Button variant="destructive">DEL</Button>
         </form>
       );
