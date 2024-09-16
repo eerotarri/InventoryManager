@@ -59,7 +59,6 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
 
     this.fridgeItems.push(newFridgeItem);
 
-    console.log("list after: ", this.fridgeItems);
     return newFridgeItem;
   }
 
@@ -73,8 +72,6 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
   }
 
   async deleteFridgeItem(id: string): Promise<void> {
-    console.log("list before: ", this.fridgeItems);
     this.fridgeItems = this.fridgeItems.filter((item) => item.id !== id);
-    console.log("list after: ", this.fridgeItems);
   }
 }

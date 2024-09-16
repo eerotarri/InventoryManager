@@ -19,11 +19,26 @@ export async function createFridgeItemController(input: InsertFridgeItem) {
 
   // If there is an error, throw an InputParseError
   if (inputParseError) {
-    throw new InputParseError(inputParseError.message);
+    const error = zodStringToErrorObject(inputParseError.message);
+    throw new InputParseError(error);
   }
 
   // Call the use case function with the validated data
   const fridgeItem = await createFridgeItemUseCase(data);
 
   return presenter(fridgeItem);
+}
+
+// TODO: This is probably the responsibility of the error or at least the controller
+// For the sake of readability
+function zodStringToErrorObject(message: string) {
+  return JSON.stringify(
+    JSON.parse(message)
+      .map((issue: any) => {
+        return { [issue.path]: issue.message };
+      })
+      .reduce((acc: any, curr: any) => {
+        return { ...acc, ...curr };
+      }, {})
+  );
 }
