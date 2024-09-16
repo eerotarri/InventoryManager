@@ -6,7 +6,25 @@ import { createFridgeItemController } from "@/lib/interface-adapters/controllers
 import { deleteFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/delete-fridge-item.controller";
 import { revalidatePath } from "next/cache";
 
-export async function createFridgeItemAction(formData: FormData) {
+export type FormState = {
+  message: string;
+  errors?: {
+    name?: string;
+    quantity?: string;
+    suffix?: string;
+    generic?: string;
+  };
+  fieldValues: {
+    name: string;
+    quantity: string;
+    suffix: string;
+  };
+};
+
+export async function createFridgeItemAction(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
   try {
     // Construct the new item from formData
     const newItem = {
@@ -17,23 +35,44 @@ export async function createFridgeItemAction(formData: FormData) {
 
     // Pass the data to the controller
     await createFridgeItemController(newItem);
+
+    // Revalidate the home page to show the new item
+    revalidatePath("/");
+
+    return {
+      message: "success",
+      errors: undefined,
+      fieldValues: { name: "", quantity: "", suffix: "" },
+    };
   } catch (error) {
     // Catch zod parse errors and return them to the client
     if (error instanceof InputParseError) {
-      return { success: false, error: error.message };
+      return {
+        message: "error",
+        errors: JSON.parse(error.message),
+        fieldValues: {
+          name: formData.get("name") as string,
+          quantity: formData.get("quantity") as string,
+          suffix: formData.get("suffix") as string,
+        },
+      };
     }
     // Catch any other errors and return a generic error message
-    return { success: false, error: "Unexpected error occured." };
+    return {
+      message: "error",
+      errors: { generic: "An error occurred." },
+      fieldValues: {
+        name: formData.get("name") as string,
+        quantity: formData.get("quantity") as string,
+        suffix: formData.get("suffix") as string,
+      },
+    };
   }
-
-  // Revalidate the home page to show the new item
-  revalidatePath("/");
-  return { success: true };
 }
 
-export async function deleteFridgeItemAction(formData: FormData) {
+export async function deleteFridgeItemAction(id: string) {
   // Call the controller with the id
-  await deleteFridgeItemController(formData.get("id") as string);
+  await deleteFridgeItemController(id);
 
   // Revalidate the home page to show the updated list
   revalidatePath("/");
