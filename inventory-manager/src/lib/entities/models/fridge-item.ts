@@ -1,8 +1,20 @@
-type FridgeItem = {
-  id: string; // Uniikki tunniste jokaiselle tuotteelle
-  name: string; // Tuotteen nimi
-  quantity: number; // Tuotteen määrä, esim. lukumäärä tai paino
-  suffix: "kpl" | "l" | "kg";
-  createdAt: Date;
-  updatedAt: Date;
-};
+import { z } from "zod";
+
+export const fridgeItemSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1),
+  quantity: z.number().min(0),
+  suffix: z.union([z.literal("kpl"), z.literal("l"), z.literal("kg")]),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export type FridgeItem = z.infer<typeof fridgeItemSchema>;
+
+export const insertFridgeItemSchema = fridgeItemSchema.pick({
+  name: true,
+  quantity: true,
+  suffix: true,
+});
+
+export type InsertFridgeItem = z.infer<typeof insertFridgeItemSchema>;
