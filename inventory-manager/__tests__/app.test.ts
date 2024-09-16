@@ -1,3 +1,3 @@
-test("Always passes", () => {
-    expect(true).toBe(true);
+it("Always passes", () => {
+  expect(true).toBe(true);
 });

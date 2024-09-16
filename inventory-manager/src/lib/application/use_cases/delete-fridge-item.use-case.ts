@@ -7,7 +7,7 @@ import { MockFridgeItemRepository } from "@/lib/infrastructure/repositories/frid
 import { FridgeItemRepository } from "@/lib/infrastructure/repositories/fridge-items.repository";
 
 const fridgeItemRepository =
-  process.env.NODE_ENV == "development"
+  process.env.NODE_ENV !== "production"
     ? MockFridgeItemRepository.getInstance()
     : FridgeItemRepository.getInstance();
 
