@@ -40,7 +40,7 @@ export default function Form() {
             }
           />
           <span className="text-left text-sm text-red-600">
-            {formState.errors?.name}
+            {formState.errors?.name?._errors.join("\n")}
           </span>
         </div>
         <div className="flex flex-col">
@@ -54,7 +54,7 @@ export default function Form() {
             }
           />
           <span className="text-left text-sm text-red-600">
-            {formState.errors?.quantity}
+            {formState.errors?.quantity?._errors.join("\n")}
           </span>
         </div>
         <div className="flex flex-col">
@@ -74,7 +74,7 @@ export default function Form() {
             </SelectContent>
           </Select>
           <span className="text-left text-sm text-red-600">
-            {formState.errors?.suffix}
+            {formState.errors?.suffix?._errors.join("\n")}
           </span>
         </div>
         <FormSubmitButton

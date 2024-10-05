@@ -6,13 +6,17 @@ import { createFridgeItemController } from "@/lib/interface-adapters/controllers
 import { deleteFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/delete-fridge-item.controller";
 import { revalidatePath } from "next/cache";
 
+type ErrorMessage = {
+  _errors: string[];
+};
+
 export type FormState = {
   message: string;
   errors?: {
-    name?: string;
-    quantity?: string;
-    suffix?: string;
-    generic?: string;
+    name?: ErrorMessage;
+    quantity?: ErrorMessage;
+    suffix?: ErrorMessage;
+    _errors?: string[];
   };
   fieldValues: {
     name: string;

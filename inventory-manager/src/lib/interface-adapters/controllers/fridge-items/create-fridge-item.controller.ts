@@ -5,6 +5,7 @@ import {
   InsertFridgeItem,
   FridgeItem,
 } from "@/lib/entities/models/fridge-item";
+
 function presenter(fridgeItem: FridgeItem | undefined) {
   // This is a presenter function
   // It can be used to format the data in a way that the client expects
@@ -26,25 +27,12 @@ export async function createFridgeItemController(
 
   // If there is an error, throw an InputParseError
   if (inputParseError) {
-    const error = zodStringToErrorObject(inputParseError.message);
-    throw new InputParseError(error);
+    console.error(inputParseError.format());
+    throw new InputParseError(JSON.stringify(inputParseError.format()));
   }
 
   // Call the use case function with the validated data
   const fridgeItem = await createFridgeItemUseCase(data);
 
   return presenter(fridgeItem);
-}
-
-// For the sake of readability
-function zodStringToErrorObject(message: string) {
-  return JSON.stringify(
-    JSON.parse(message)
-      .map((issue: any) => {
-        return { [issue.path]: issue.message };
-      })
-      .reduce((acc: any, curr: any) => {
-        return { ...acc, ...curr };
-      }, {})
-  );
 }
