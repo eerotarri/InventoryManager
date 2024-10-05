@@ -34,7 +34,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
       CREATE TABLE IF NOT EXISTS items (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        quantity INT NOT NULL,
+        quantity FLOAT NOT NULL,
         suffix ENUM('kpl', 'l', 'kg') NOT NULL,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

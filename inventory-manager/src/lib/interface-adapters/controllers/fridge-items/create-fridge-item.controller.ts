@@ -11,8 +11,15 @@ function presenter(fridgeItem: FridgeItem | undefined) {
   return fridgeItem;
 }
 
-// Controller is responsible for authorization and data validation before calling the use case function
-export async function createFridgeItemController(input: InsertFridgeItem) {
+/**
+ * Controller is responsible for authorization and data validation before calling the use case function
+ * @param { InsertFridgeItem } input - The input data for creating a fridge item without auto-generated fields
+ * @throws { InputParseError } - If the input is invalid
+ * @returns { Promise<FridgeItem | undefined> } - The created fridge item or undefined if the operation failed
+ */
+export async function createFridgeItemController(
+  input: InsertFridgeItem
+): Promise<FridgeItem | undefined> {
   // Validate the input with zod
   const { data, error: inputParseError } =
     insertFridgeItemSchema.safeParse(input);
@@ -29,7 +36,6 @@ export async function createFridgeItemController(input: InsertFridgeItem) {
   return presenter(fridgeItem);
 }
 
-// TODO: This is probably the responsibility of the error or at least the controller
 // For the sake of readability
 function zodStringToErrorObject(message: string) {
   return JSON.stringify(
