@@ -6,13 +6,14 @@ import { createFridgeItemController } from "@/lib/interface-adapters/controllers
 import { deleteFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/delete-fridge-item.controller";
 import { revalidatePath } from "next/cache";
 
-type ErrorMessage = {
-  _errors: string[];
+export type ErrorMessage = {
+  _errors: string[]; // Dictated by the zod error format
 };
 
 export type FormState = {
   message: string;
   errors?: {
+    // Dictated by the zod error format
     name?: ErrorMessage;
     quantity?: ErrorMessage;
     suffix?: ErrorMessage;
@@ -64,7 +65,7 @@ export async function createFridgeItemAction(
     // Catch any other errors and return a generic error message
     return {
       message: "error",
-      errors: { generic: "An error occurred." },
+      errors: { _errors: ["An error occurred."] },
       fieldValues: {
         name: formData.get("name") as string,
         quantity: formData.get("quantity") as string,
