@@ -18,7 +18,10 @@ export class FridgeItemRepository implements IFridgeItemRepository {
   public static getInstance(): FridgeItemRepository {
     if (!FridgeItemRepository.instance) {
       FridgeItemRepository.instance = new FridgeItemRepository();
-      FridgeItemRepository.instance.createFridgeItemTable(); // Initialize with mock data
+
+      // Prevent accessing the database when its not available
+      if (process.env.RUNNING_IN_DOCKER === "true")
+        FridgeItemRepository.instance.createFridgeItemTable();
     }
     return FridgeItemRepository.instance;
   }

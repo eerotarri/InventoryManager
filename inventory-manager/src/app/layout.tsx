@@ -1,16 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import packageJson from "../../package.json";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-});
+import { inter, lusitana } from "./fonts/fonts";
 
 export const metadata: Metadata = {
   title: "Mökki-inventaario",
@@ -25,11 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`bg-[#ac8968] ${geistSans.variable} ${geistMono.variable}`}
-      >
+      <body className={`bg-background ${inter.className} antialiased}`}>
         {children}
         <p
+          className={`${lusitana.className} antialiased`}
           style={{
             position: "fixed",
             bottom: 0,

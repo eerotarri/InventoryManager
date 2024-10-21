@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       allowedOrigins: [
@@ -8,6 +9,7 @@ const nextConfig = {
         "https://inventaario.eerotarri.fi",
       ],
     },
+    reactCompiler: true,
   },
 };
 
