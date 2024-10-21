@@ -22,7 +22,7 @@ export default function Form() {
     <>
       <form
         action={formAction}
-        className="space-y-4 p-4 bg-white shadow-md rounded-md"
+        className="z-0 space-y-4 p-4 bg-primary shadow-md rounded-md w-full"
       >
         <FormInput
           defaultValue={formState.fieldValues?.name}
@@ -43,7 +43,7 @@ export default function Form() {
         />
         <FormSubmitButton
           type="submit"
-          className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="w-full p-2 text-white rounded-md"
         />
       </form>
     </>

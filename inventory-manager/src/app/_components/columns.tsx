@@ -2,10 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { FridgeItem } from "@/lib/entities/models/fridge-item";
-import { deleteFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/delete-fridge-item.controller";
 import { ColumnDef } from "@tanstack/react-table";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/dist/server/api-utils";
 import { deleteFridgeItemAction } from "../actions";
 
 const HEADER_TEXT_COLOR = "text-slate-700";
@@ -31,10 +28,11 @@ export const columns: ColumnDef<FridgeItem>[] = [
   },
   {
     accessorKey: "delete",
+    header: () => <div className={`${HEADER_TEXT_COLOR}`}></div>,
     cell: ({ row }) => {
       return (
         <form action={deleteFridgeItemAction.bind(null, row.original.id)}>
-          <Button variant="destructive">DEL</Button>
+          <Button variant="destructive">X</Button>
         </form>
       );
     },
