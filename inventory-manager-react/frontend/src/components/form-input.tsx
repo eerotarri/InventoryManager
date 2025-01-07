@@ -1,38 +1,30 @@
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { ErrorMessage } from "../actions";
 import clsx from "clsx";
 
 interface FormInputProps {
-  defaultValue?: string;
+  // defaultValue?: string;
   name: string;
   placeholder: string;
-  error?: ErrorMessage;
+  // error?: ErrorMessage;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
-  defaultValue,
+  // defaultValue,
   name,
   placeholder,
-  error,
+  // error,
   ...props
 }) => {
   return (
     <div className="flex flex-col">
       <Input
-        defaultValue={defaultValue}
+        // defaultValue={defaultValue}
         name={name}
         placeholder={placeholder}
-        className={clsx("w-full p-2 border rounded-md", {
-          "border-red-600": error,
-        })}
+        className={clsx("w-full p-2 border rounded-md")}
         {...props}
       />
-      {error && (
-        <span className="text-left text-sm text-red-600">
-          {error._errors.join("\n")}
-        </span>
-      )}
     </div>
   );
 };
