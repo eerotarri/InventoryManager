@@ -5,29 +5,19 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select"; // Adjust the import according to your library
-import { ErrorMessage } from "../actions";
+} from "@/components/ui/select";
 import clsx from "clsx";
 
 interface FormSelectProps {
   name: string;
   defaultValue?: string;
-  error?: ErrorMessage;
 }
 
-const FormSelect: React.FC<FormSelectProps> = ({
-  name,
-  defaultValue,
-  error,
-}) => {
+const FormSelect: React.FC<FormSelectProps> = ({ name, defaultValue }) => {
   return (
     <div className="flex flex-col">
       <Select name={name} defaultValue={defaultValue}>
-        <SelectTrigger
-          className={clsx("w-full p-2 border rounded-md", {
-            "border-red-600": error,
-          })}
-        >
+        <SelectTrigger className={clsx("w-full p-2 border rounded-md")}>
           <SelectValue placeholder="Kappale" />
         </SelectTrigger>
         <SelectContent>
@@ -36,11 +26,6 @@ const FormSelect: React.FC<FormSelectProps> = ({
           <SelectItem value="l">Litra</SelectItem>
         </SelectContent>
       </Select>
-      {error && (
-        <span className="text-left text-sm text-red-600">
-          {error._errors.join("\n")}
-        </span>
-      )}
     </div>
   );
 };

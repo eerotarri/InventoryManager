@@ -21,10 +21,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
   public static getInstance(): FridgeItemRepository {
     if (!FridgeItemRepository.instance) {
       FridgeItemRepository.instance = new FridgeItemRepository();
-
-      // Prevent accessing the database when its not available
-      if (process.env.RUNNING_IN_DOCKER === "true")
-        FridgeItemRepository.instance.createFridgeItemTable();
+      FridgeItemRepository.instance.createFridgeItemTable();
     }
     return FridgeItemRepository.instance;
   }
@@ -54,7 +51,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     } catch (error) {
       console.error("Error creating table:", error);
     } finally {
-      await connection.end();
+      connection.release();
     }
   }
 
@@ -72,7 +69,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {
-      await connection.end();
+      await connection.release();
     }
 
     return undefined;
@@ -97,7 +94,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     } catch (error) {
       console.error("Error inserting item:", error);
     } finally {
-      await connection.end();
+      await connection.release();
     }
     return undefined;
   }
@@ -122,7 +119,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     } catch (error) {
       console.error("Error updating item:", error);
     } finally {
-      await connection.end();
+      await connection.release();
     }
   }
 
@@ -139,7 +136,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     } catch (error) {
       console.error("Error deleting item:", error);
     } finally {
-      await connection.end();
+      await connection.release();
     }
   }
 }

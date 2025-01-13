@@ -3,15 +3,12 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - 3002:3002
+      - 3002:80
     volumes:
       - ./frontend:/app
       - /app/node_modules
     depends_on:
       - backend
-    environment:
-      - DATABASE_CONNECTION_STRING=mysql://root:root@db:3306/inventory_db
-      - RUNNING_IN_DOCKER=true
     restart: always
 
   backend:

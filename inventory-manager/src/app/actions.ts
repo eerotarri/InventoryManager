@@ -4,7 +4,7 @@ import { InputParseError } from "@/lib/entities/errors/common";
 import { InsertFridgeItem } from "@/lib/entities/models/fridge-item";
 import { createFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/create-fridge-item.controller";
 import { deleteFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/delete-fridge-item.controller";
-import { revalidatePath } from "next/cache";
+import { unstable_expirePath as expirePath } from "next/cache";
 
 export type ErrorMessage = {
   _errors: string[]; // Dictated by the zod error format
@@ -42,7 +42,7 @@ export async function createFridgeItemAction(
     await createFridgeItemController(newItem);
 
     // Revalidate the home page to show the new item
-    revalidatePath("/");
+    expirePath("/");
 
     return {
       message: "success",
@@ -80,5 +80,5 @@ export async function deleteFridgeItemAction(id: string) {
   await deleteFridgeItemController(id);
 
   // Revalidate the home page to show the updated list
-  revalidatePath("/");
+  expirePath("/");
 }

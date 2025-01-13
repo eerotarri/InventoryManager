@@ -27,7 +27,6 @@ export async function createFridgeItemController(
 
   // If there is an error, throw an InputParseError
   if (inputParseError) {
-    console.error(inputParseError.format());
     throw new InputParseError(JSON.stringify(inputParseError.format()));
   }
 
