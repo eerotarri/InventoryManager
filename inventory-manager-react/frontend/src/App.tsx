@@ -35,10 +35,12 @@ function App() {
   });
 
   return (
-    <>
-      <Form />
-      <DataTable columns={columns} data={items ?? []} />
-    </>
+    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-start justify-items-center px-3 pb-20 gap-16 sm:p-20">
+      <div className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <Form />
+        <DataTable columns={columns} data={items ?? []} />
+      </div>
+    </div>
   );
 }
 

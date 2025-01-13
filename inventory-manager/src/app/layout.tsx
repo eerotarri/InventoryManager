@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import packageJson from "../../package.json";
-import { inter, lusitana } from "./fonts/fonts";
+// import packageJson from "../../package.json";
+import { inter } from "./fonts/fonts";
 
 export const metadata: Metadata = {
   title: "Mökki-inventaario",
@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`bg-background ${inter.className} antialiased}`}>
         {children}
-        <p
+        {/* <p
           className={`${lusitana.className} antialiased`}
           style={{
             position: "fixed",
@@ -29,7 +29,7 @@ export default function RootLayout({
           }}
         >
           {packageJson.version}
-        </p>
+        </p> */}
       </body>
     </html>
   );
