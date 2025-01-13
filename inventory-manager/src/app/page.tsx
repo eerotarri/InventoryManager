@@ -11,9 +11,6 @@ async function getFridgeItems() {
 }
 
 export default async function Home() {
-  // Prevent the page from being cached
-  unstable_noStore();
-
   // Fetch the fridge items
   const items = await getFridgeItems();
 
