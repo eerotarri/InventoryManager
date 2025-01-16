@@ -27,7 +27,7 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
     // but you can use this method to initialize any data if needed.
     this.fridgeItems = [
       {
-        id: "1",
+        id: "5",
         name: "Milk",
         quantity: 1,
         suffix: "l",
@@ -35,7 +35,7 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
         updatedAt: new Date(),
       },
       {
-        id: "2",
+        id: "6",
         name: "Eggs",
         quantity: 10,
         suffix: "kpl",
