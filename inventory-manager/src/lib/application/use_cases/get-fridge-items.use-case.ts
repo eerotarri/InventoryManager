@@ -3,7 +3,8 @@ import { FridgeItemRepository } from "@/lib/infrastructure/repositories/fridge-i
 import { MockFridgeItemRepository } from "@/lib/infrastructure/repositories/fridge-items.repository.mock";
 
 const fridgeItemRepository =
-  process.env.NODE_ENV !== "production"
+  process.env.NODE_ENV !== "production" ||
+  process.env.RUNNING_IN_DOCKER !== "true"
     ? MockFridgeItemRepository.getInstance()
     : FridgeItemRepository.getInstance();
 

@@ -1,17 +1,20 @@
 // import { ArticleForm } from "@/components/ui/article-form";
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
-import { unstable_noStore } from "next/cache";
 import { getFridgeItemsController } from "@/lib/interface-adapters/controllers/fridge-items/get-fridge-items.controller";
 import Form from "./_components/form";
 import Image from "next/image";
+import { connection } from "next/server";
 
 async function getFridgeItems() {
   return await getFridgeItemsController();
 }
 
 export default async function Home() {
-  // Fetch the fridge items
+  // Ensure dynamic rendering to handle incoming user requests.
+  // This prevents the page from being statically rendered by default.
+  await connection();
+
   const items = await getFridgeItems();
 
   return (

@@ -5,11 +5,12 @@ import { useState } from "react";
 
 import { ReactNode } from "react";
 
-// Define the links in the navbar
+// Defines the links in the navbar
+// href must be a valid path in the application: https://nextjs.org/docs/app/getting-started/project-structure
+// text is the text that will be displayed in the navbar and can be anything
 const links = [
   { href: "/", text: "Koti" },
   { href: "/about", text: "Tietoa" },
-  { href: "/contact", text: "Ota yhteyttä" },
 ];
 
 interface LinkProps {
@@ -18,7 +19,7 @@ interface LinkProps {
   className?: string;
 }
 
-// TODO: Custom link component before we start using the Next.js Link component
+// TODO: CustomLink (essentially <a>) component before we start using the Next.js Link component
 const CustomLink = ({ href, children, className }: LinkProps) => (
   <a
     href={href}
@@ -28,21 +29,32 @@ const CustomLink = ({ href, children, className }: LinkProps) => (
   </a>
 );
 
+/**
+ * NavBar component.
+ *
+ * @returns {JSX.Element} The rendered navigation bar component.
+ *
+ * @example
+ * <NavBar />
+ */
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  /**
+   * Toggles the state of the menu (open/close).
+   */
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <nav className="bg-gray-800 text-white">
+    <nav className="bg-slate-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <a href="/" className="flex-shrink-0">
+            <CustomLink href="/" className="flex-shrink-0">
               <span className="text-xl font-bold">InventaarioAPP</span>
-            </a>
+            </CustomLink>
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">

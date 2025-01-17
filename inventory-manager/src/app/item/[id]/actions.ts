@@ -20,6 +20,7 @@ export async function updateFridgeItemAction(
 
   // Revalidate the product page to reflect the changes
   revalidatePath(`/product/${id}`);
+
   console.log("Update might have been successful ID: " + id);
 
   return {

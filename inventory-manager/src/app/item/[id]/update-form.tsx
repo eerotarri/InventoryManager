@@ -6,7 +6,6 @@ import { FormSubmitButton } from "../../_components/form-submit-button";
 import { FormInput } from "../../_components/form-input";
 import FormSelect from "../../_components/form-select";
 import React from "react";
-import { FridgeItem } from "@/lib/entities/models/fridge-item";
 
 type UpdateFormProps = {
   initialData: {
