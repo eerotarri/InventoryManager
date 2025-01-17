@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/table";
 import { FridgeItem } from "@/lib/entities/models/fridge-item";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
