@@ -9,7 +9,6 @@ import { ReactNode } from "react";
 const links = [
   { href: "/", text: "Koti" },
   { href: "/about", text: "Tietoa" },
-  { href: "/contact", text: "Ota yhteyttä" },
 ];
 
 interface LinkProps {

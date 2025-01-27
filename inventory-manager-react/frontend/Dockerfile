@@ -1,31 +1,31 @@
-# Dockerfile
+# Builder vaihe
 FROM node:20-alpine as builder
 
 WORKDIR /app
 
-# Copy package files
+# Kopioidaan package-tiedostot
 COPY package*.json ./
 
-# Install dependencies
+# Asennetaan riippuvuudet
 RUN npm install
 
-# Copy project files
+# Kopioidaan lähdekoodi
 COPY . .
 
-# Build the app
+# Käännetään sovellus
 RUN npm run build
 
-# Production stage
+# Production vaihe
 FROM nginx:alpine
 
-# Copy built assets from builder stage
+# Kopioidaan rakennettu sovellus Nginxin HTML-kansioon
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration if you have custom config
-# COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+# Kopioidaan mukautettu Nginx-konfiguraatio
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
+# Palvelimen portti
 EXPOSE 80
 
-# Start nginx
+# Käynnistetään Nginx
 CMD ["nginx", "-g", "daemon off;"]
