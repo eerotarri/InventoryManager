@@ -1,19 +1,11 @@
 import { notFound } from "next/navigation";
 import { FridgeItem } from "@/lib/entities/models/fridge-item";
 import UpdateForm from "./update-form";
+import { getFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/get-fridge-item.controller";
 
 // This is a mock function. Replace it with your actual data fetching logic.
-async function getFridgeItem(id: string) {
-  // Simulating an API call
-  const item: FridgeItem = {
-    id,
-    name: "Milk",
-    quantity: 2,
-    suffix: "l",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-  return item;
+async function getFridgeItem(id: string): Promise<FridgeItem | null> {
+  return getFridgeItemController(id);
 }
 
 export default async function ProductPage({
@@ -22,7 +14,7 @@ export default async function ProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const fridgeItem: FridgeItem = await getFridgeItem(id);
+  const fridgeItem = await getFridgeItem(id);
 
   if (!fridgeItem) {
     notFound();

@@ -1,4 +1,4 @@
-import { createFridgeItemUseCase } from "@/lib/application/use_cases/create-fridge-item.use-case";
+import { updateFridgeItemUseCase } from "@/lib/application/use_cases/update-fridge-item.use-case";
 import { InputParseError } from "@/lib/entities/errors/common";
 import {
   insertFridgeItemSchema,
@@ -18,7 +18,8 @@ function presenter(fridgeItem: FridgeItem | undefined) {
  * @throws { InputParseError } - If the input is invalid
  * @returns { Promise<FridgeItem | undefined> } - The created fridge item or undefined if the operation failed
  */
-export async function createFridgeItemsController(
+export async function udpateFridgeItemController(
+  id: string,
   input: InsertFridgeItem
 ): Promise<FridgeItem | undefined> {
   // Validate the input with zod
@@ -32,7 +33,7 @@ export async function createFridgeItemsController(
   }
 
   // Call the use case function with the validated data
-  const fridgeItem = await createFridgeItemUseCase(data);
+  const fridgeItem = await updateFridgeItemUseCase(id, data);
 
   return presenter(fridgeItem);
 }

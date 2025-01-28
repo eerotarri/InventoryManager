@@ -24,7 +24,9 @@ export default function UpdateForm({ initialData }: UpdateFormProps) {
     updateFridgeItemAction.bind(null, id),
     {
       message: "",
-      errors: undefined,
+      errors: {
+        _errors: [],
+      },
       fieldValues: {
         name: "",
         quantity: "",
@@ -40,14 +42,14 @@ export default function UpdateForm({ initialData }: UpdateFormProps) {
         className="z-0 space-y-4 p-4 bg-primary shadow-md rounded-md w-full"
       >
         <FormInput
-          defaultValue={initialData?.name || formState.fieldValues?.name}
+          defaultValue={initialData?.name || formState?.fieldValues?.name}
           name="name"
           placeholder="Artikkelin nimi"
           // error={formState.errors?.name}
         />
         <FormInput
           defaultValue={
-            initialData?.quantity.toString() || formState.fieldValues?.quantity
+            formState?.fieldValues?.quantity || initialData?.quantity.toString()
           }
           name="quantity"
           placeholder="Määrä"
@@ -55,7 +57,7 @@ export default function UpdateForm({ initialData }: UpdateFormProps) {
         />
         <FormSelect
           name="suffix"
-          defaultValue={initialData?.suffix || formState.fieldValues?.suffix}
+          defaultValue={initialData?.suffix || formState?.fieldValues?.suffix}
           // error={formState.errors?.suffix}
         />
         <FormSubmitButton
