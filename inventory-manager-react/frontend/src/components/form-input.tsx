@@ -3,14 +3,14 @@ import React from "react";
 import clsx from "clsx";
 
 interface FormInputProps {
-  // defaultValue?: string;
+  defaultValue?: string;
   name: string;
   placeholder: string;
   // error?: ErrorMessage;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
-  // defaultValue,
+  defaultValue,
   name,
   placeholder,
   // error,
@@ -19,7 +19,7 @@ export const FormInput: React.FC<FormInputProps> = ({
   return (
     <div className="flex flex-col">
       <Input
-        // defaultValue={defaultValue}
+        defaultValue={defaultValue}
         name={name}
         placeholder={placeholder}
         className={clsx("w-full p-2 border rounded-md")}

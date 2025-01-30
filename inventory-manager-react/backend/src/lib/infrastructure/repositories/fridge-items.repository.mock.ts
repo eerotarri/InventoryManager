@@ -49,7 +49,11 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
     return this.fridgeItems;
   }
 
-  async addFridgeItem(fridgeItem: InsertFridgeItem): Promise<FridgeItem> {
+  async getFridgeItem(id: string): Promise<FridgeItem | undefined> {
+    return this.fridgeItems.find((item) => item.id === id);
+  }
+
+  async addFridgeItem(fridgeItem: InsertFridgeItem): Promise<boolean> {
     const newFridgeItem: FridgeItem = {
       id: (this.fridgeItems.length + 1).toString(),
       ...fridgeItem,
@@ -59,16 +63,24 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
 
     this.fridgeItems.push(newFridgeItem);
 
-    return newFridgeItem;
+    return true;
   }
 
-  async updateFridgeItem(updatedFridgeItem: FridgeItem): Promise<void> {
-    const index = this.fridgeItems.findIndex(
-      (item) => item.id === updatedFridgeItem.id
-    );
+  async updateFridgeItem(
+    id: string,
+    fridgeItem: InsertFridgeItem
+  ): Promise<FridgeItem | undefined> {
+    const index = this.fridgeItems.findIndex((item) => item.id === id);
+
     if (index !== -1) {
-      this.fridgeItems[index] = updatedFridgeItem;
+      this.fridgeItems[index] = {
+        ...this.fridgeItems[index],
+        ...fridgeItem,
+        updatedAt: new Date(),
+      };
     }
+
+    return this.fridgeItems[index];
   }
 
   async deleteFridgeItem(id: string): Promise<void> {

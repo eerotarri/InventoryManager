@@ -53,7 +53,7 @@ export const columns: ColumnDef<FridgeItem>[] = [
             mutation.mutate(row.original.id);
           }}
         >
-          <Button variant="destructive">X</Button>
+          <Button variant="destructive" className="delete-button">X</Button>
         </form>
       );
     },

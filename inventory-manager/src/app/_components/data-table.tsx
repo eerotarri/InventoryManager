@@ -48,7 +48,6 @@ export function DataTable<TData, TValue>({
 
   // Navigate to item details page on row click
   const handleRowClick = (id: string) => {
-    console.log("Row clicked", id);
     router.push(`/item/${id}`); // Prefetching works only on production builds
   };
 
@@ -82,7 +81,14 @@ export function DataTable<TData, TValue>({
                 className={`${selectColor(row)} border-slate-300`}
                 key={row.id}
                 // Added custom logic to navigate to item details page on row click
-                onClick={() => handleRowClick((row.original as FridgeItem).id)}
+                onClick={(e) => {
+                  // Prevent navigation to details page when delete button is clicked
+                  if ((e.target as HTMLElement).closest('.delete-button')) {
+                    e.stopPropagation();
+                    return;
+                  }
+                  handleRowClick((row.original as FridgeItem).id);
+                }}
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
