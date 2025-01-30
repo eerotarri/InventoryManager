@@ -165,7 +165,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     } catch (error) {
       console.error("Error deleting item:", error);
     } finally {
-      await connection.release();
+      connection.release();
     }
   }
 }

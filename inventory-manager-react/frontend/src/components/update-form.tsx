@@ -9,6 +9,7 @@ import {
   InsertFridgeItem,
 } from "@/lib/entities/models/fridge-item";
 import { useNavigate } from "react-router-dom";
+import { updateFridgeItemAction } from "../actions";
 
 export default function UpdateForm({
   initialData,
@@ -20,19 +21,19 @@ export default function UpdateForm({
 
   // Refactor to use React Query's useMutation hook
   const mutate = useMutation({
-    mutationFn: async (newItem: InsertFridgeItem) => {
-      console.log(newItem);
-      const response = await fetch(
-        `http://localhost:8000/api/fridge-items/${initialData.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newItem),
-        }
-      );
-      return response.json();
+    mutationFn: async ({
+      id,
+      updateItem,
+    }: {
+      id: string;
+      updateItem: InsertFridgeItem;
+    }) => {
+      console.log("updating item", id, updateItem);
+      const response = await updateFridgeItemAction({
+        id,
+        updateItem,
+      });
+      return response;
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["fridgeItems"] });
@@ -51,7 +52,7 @@ export default function UpdateForm({
       suffix: formData.get("suffix") as InsertFridgeItem["suffix"],
     };
 
-    mutate.mutate(newItem);
+    mutate.mutate({ id: initialData.id, updateItem: newItem });
   };
 
   return (

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FridgeItem } from "@/lib/entities/models/fridge-item";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteFridgeItemAction } from "@/actions";
 
 const HEADER_TEXT_COLOR = "text-slate-700";
 
@@ -33,14 +34,7 @@ export const columns: ColumnDef<FridgeItem>[] = [
       const queryClient = useQueryClient();
 
       const mutation = useMutation({
-        mutationFn: async (id: string) => {
-          await fetch(`http://localhost:8000/api/fridge-items/${id}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-        },
+        mutationFn: async (id: string) => deleteFridgeItemAction(id),
         onSettled: () => {
           queryClient.invalidateQueries({ queryKey: ["fridgeItems"] });
         },
@@ -53,7 +47,9 @@ export const columns: ColumnDef<FridgeItem>[] = [
             mutation.mutate(row.original.id);
           }}
         >
-          <Button variant="destructive" className="delete-button">X</Button>
+          <Button variant="destructive" className="delete-button">
+            X
+          </Button>
         </form>
       );
     },
