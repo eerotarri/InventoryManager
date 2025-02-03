@@ -1,5 +1,11 @@
 import { InsertFridgeItem } from "@/lib/entities/models/fridge-item";
 
+export type ErrorMessage = {
+  [key: string]: {
+    _errors: string[];
+  } | string[]; // Dictated by the zod error format
+};
+
 export async function getFridgeItemsAction() {
   const response = await fetch("http://localhost:8000/api/fridge-items");
   return response.json();

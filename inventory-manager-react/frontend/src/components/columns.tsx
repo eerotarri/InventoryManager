@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { FridgeItem } from "@/lib/entities/models/fridge-item";
 import { ColumnDef } from "@tanstack/react-table";
@@ -34,7 +32,7 @@ export const columns: ColumnDef<FridgeItem>[] = [
       const queryClient = useQueryClient();
 
       const mutation = useMutation({
-        mutationFn: async (id: string) => deleteFridgeItemAction(id),
+        mutationFn: async (id: string) => await deleteFridgeItemAction(id),
         onSettled: () => {
           queryClient.invalidateQueries({ queryKey: ["fridgeItems"] });
         },

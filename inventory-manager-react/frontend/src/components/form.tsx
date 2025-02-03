@@ -3,17 +3,26 @@ import { FormInput } from "./form-input";
 import FormSelect from "./form-select";
 import { useMutation, useQueryClient } from "@tanstack/react-query"; // This import is not used in this file. It can be removed.
 import { InsertFridgeItem } from "@/lib/entities/models/fridge-item";
-import { createFridgeItemAction } from "@/actions";
+import { createFridgeItemAction, ErrorMessage } from "@/actions";
+import { useState } from "react";
 
 export default function Form() {
   const queryClient = useQueryClient(); // This line is not used in this file. It can be removed.
+
+  const [error, setError] = useState<ErrorMessage | undefined>(); // This line is not used in this file. It can be removed.
 
   // Refactor to use React Query's useMutation hook
   const mutate = useMutation({
     mutationFn: async (newItem: InsertFridgeItem) =>
       createFridgeItemAction(newItem),
-    onSettled: () => {
+    onSettled: (data) => {
       queryClient.invalidateQueries({ queryKey: ["fridgeItems"] });
+      if (data.error) {
+        setError(JSON.parse(data.error));
+        return;
+      }
+
+      setError(undefined);
     },
   });
 
@@ -26,19 +35,17 @@ export default function Form() {
       suffix: formData.get("suffix") as InsertFridgeItem["suffix"],
     };
 
-    console.log("newItem:", newItem); // Debugging to ensure it has the expected data
-
     mutate.mutate(newItem);
   };
 
-  return (
+ return (
     <>
       <form
         onSubmit={handleSubmit}
         className="z-0 space-y-4 p-4 bg-primary shadow-md rounded-md w-full"
       >
-        <FormInput name="name" placeholder="Artikkelin nimi" />
-        <FormInput name="quantity" placeholder="Määrä" />
+        <FormInput name="name" placeholder="Artikkelin nimi" error={error?.name as ErrorMessage}/>
+        <FormInput name="quantity" placeholder="Määrä" error={error?.quantity as ErrorMessage} />
         <FormSelect name="suffix" defaultValue="kpl" />
         <FormSubmitButton
           type="submit"
