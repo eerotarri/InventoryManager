@@ -5,7 +5,7 @@ import { inter } from "./fonts/fonts";
 import NavBar from "@/components/ui/navbar";
 
 export const metadata: Metadata = {
-  title: "Mökki-inventaario",
+  title: "Mökki-inventaario NextJS",
   description:
     "Inventaario käyttöliittymä mökin ruokatarvikkeiden päivittämiseen.",
 };
