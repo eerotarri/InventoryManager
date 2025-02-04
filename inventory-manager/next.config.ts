@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         "https://inventaario.eerotarri.fi",
       ],
     },
-    reactCompiler: true,
+    reactCompiler: false,
   },
 };
 

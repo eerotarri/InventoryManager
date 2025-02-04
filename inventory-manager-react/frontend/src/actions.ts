@@ -1,27 +1,70 @@
 import { InsertFridgeItem } from "@/lib/entities/models/fridge-item";
-import { useQueryClient } from "@tanstack/react-query";
+
+export type ErrorMessage = {
+  [key: string]: {
+    _errors: string[];
+  } | string[]; // Dictated by the zod error format
+};
+
+export async function getFridgeItemsAction() {
+  const response = await fetch("http://localhost:8000/api/fridge-items");
+  return response.json();
+}
 
 export async function createFridgeItemAction(newItem: InsertFridgeItem) {
-  const queryClient = useQueryClient();
   try {
-    // Pass the data to the controller
-    // await createFridgeItemController(newItem);
-    // TODO: Call fetch API to create a new fridge item
-    newItem;
+    const response = await fetch("http://localhost:8000/api/fridge-items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newItem),
+    });
 
-    // Revalidate the home page to show the new item
-    queryClient.invalidateQueries({ queryKey: ["fridgeItems"] });
+    return response.json();
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function deleteFridgeItemAction(_id: string) {
-  const queryClient = useQueryClient();
-  // Call the controller with the id
-  // await deleteFridgeItemController(id);
-  // Call fetch API to delete the fridge item
+export async function updateFridgeItemAction({
+  id,
+  updateItem,
+}: {
+  id: string;
+  updateItem: InsertFridgeItem;
+}) {
+  try {
+    const response = await fetch(
+      `http://localhost:8000/api/fridge-items/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateItem),
+      }
+    );
 
-  // Revalidate the home page to show the updated list
-  queryClient.invalidateQueries({ queryKey: ["fridgeItems"] });
+    return response.json();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteFridgeItemAction(id: string) {
+  try {
+    const response = await fetch(
+      `http://localhost:8000/api/fridge-items/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.json();
+  } catch (error) {
+    console.error(error);
+  }
 }

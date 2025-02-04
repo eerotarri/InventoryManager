@@ -1,8 +1,8 @@
 import { getFridgeItemsUseCase } from "@/lib/application/use_cases/get-fridge-items.use-case";
 import { InsertFridgeItem } from "@/lib/entities/models/fridge-item";
-import { createFridgeItemController } from "@/lib/interface-adapters/controllers/fridge-items/create-fridge-item.controller";
+import { createFridgeItemsController } from "@/lib/interface-adapters/controllers/fridge-items/create-fridge-item.controller";
 
-describe("createFridgeItemController", () => {
+describe("createFridgeItemsController", () => {
   it("should create a new fridge item", async () => {
     const fridgeItems = await getFridgeItemsUseCase();
 
@@ -19,7 +19,7 @@ describe("createFridgeItemController", () => {
       suffix: "kpl",
     } satisfies InsertFridgeItem;
 
-    await createFridgeItemController(insertFridgeItem);
+    await createFridgeItemsController(insertFridgeItem);
 
     const fridgeItemsAfterCreate = await getFridgeItemsUseCase();
     const fridgeItemCountAfterCreate = fridgeItemsAfterCreate?.length;

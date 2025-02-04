@@ -1,9 +1,12 @@
 import express from "express";
 import cors from "cors";
 import { getFridgeItemsController } from "./lib/interface-adapters/controllers/fridge-items/get-fridge-items.controller";
+import { getFridgeItemController } from "./lib/interface-adapters/controllers/fridge-items/get-fridge-item.controller";
 import { deleteFridgeItemController } from "./lib/interface-adapters/controllers/fridge-items/delete-fridge-item.controller";
-import { createFridgeItemController } from "./lib/interface-adapters/controllers/fridge-items/create-fridge-item.controller";
+import { createFridgeItemsController } from "./lib/interface-adapters/controllers/fridge-items/create-fridge-item.controller";
+import { updateFridgeItemController } from "./lib/interface-adapters/controllers/fridge-items/update-fridge-item.controller";
 import { InsertFridgeItem } from "./lib/entities/models/fridge-item";
+import { InputParseError } from "./lib/entities/errors/common";
 
 const app = express();
 const port = 8000;
@@ -15,14 +18,38 @@ app.get("/api/fridge-items", async (req, res) => {
   res.status(200).send(fridgeItems);
 });
 
-app.post("/api/fridge-items", (req, res) => {
+app.post("/api/fridge-items", async (req, res) => {
   const newItem: InsertFridgeItem = req.body;
   try {
-    createFridgeItemController(newItem);
-    res.status(200).send(`Item ${newItem.name} created`);
+    await createFridgeItemsController(newItem);
+    res.status(200).send({message: `Item ${newItem.name} created`});
   } catch (error) {
     console.error(error);
-    res.status(400).send(error);
+    if (error instanceof InputParseError)
+      res.status(400).send({ error: error.message });
+    else
+      res.status(500).send({ error: "An error occurred" });
+  }
+});
+
+app.get("/api/fridge-items/:id", async (req, res) => {
+  const id = req.params.id;
+  const fridgeItems = await getFridgeItemController(id);
+  res.status(200).send(fridgeItems);
+});
+
+app.put("/api/fridge-items/:id", async (req, res) => {
+  const id = req.params.id;
+  const newItem: InsertFridgeItem = req.body;
+  try {
+    await updateFridgeItemController(id, newItem);
+    res.status(200).send(`Item with id ${id} updated`);
+  } catch (error) {
+    console.error(error);
+    if (error instanceof InputParseError)
+      res.status(400).send({ error: error.message });
+    else
+      res.status(500).send({ error: "An error occurred" });
   }
 });
 

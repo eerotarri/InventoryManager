@@ -3,6 +3,7 @@ import {
   FridgeItem,
   InsertFridgeItem,
 } from "@/lib/entities/models/fridge-item";
+import { isDataView } from "util/types";
 
 export class MockFridgeItemRepository implements IFridgeItemRepository {
   private fridgeItems: FridgeItem[] = [];
@@ -27,7 +28,7 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
     // but you can use this method to initialize any data if needed.
     this.fridgeItems = [
       {
-        id: "1",
+        id: "5",
         name: "Milk",
         quantity: 1,
         suffix: "l",
@@ -35,7 +36,7 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
         updatedAt: new Date(),
       },
       {
-        id: "2",
+        id: "6",
         name: "Eggs",
         quantity: 10,
         suffix: "kpl",
@@ -47,6 +48,10 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
 
   async getFridgeItems(): Promise<FridgeItem[] | undefined> {
     return this.fridgeItems;
+  }
+
+  async getFridgeItem(id: string): Promise<FridgeItem | undefined> {
+    return this.fridgeItems.find((item) => item.id === id);
   }
 
   async addFridgeItem(fridgeItem: InsertFridgeItem): Promise<FridgeItem> {
@@ -62,13 +67,21 @@ export class MockFridgeItemRepository implements IFridgeItemRepository {
     return newFridgeItem;
   }
 
-  async updateFridgeItem(updatedFridgeItem: FridgeItem): Promise<void> {
-    const index = this.fridgeItems.findIndex(
-      (item) => item.id === updatedFridgeItem.id
-    );
+  async updateFridgeItem(
+    id: string,
+    fridgeItem: InsertFridgeItem
+  ): Promise<FridgeItem | undefined> {
+    const index = this.fridgeItems.findIndex((item) => item.id === id);
+    console.log(index);
     if (index !== -1) {
-      this.fridgeItems[index] = updatedFridgeItem;
+      this.fridgeItems[index] = {
+        ...this.fridgeItems[index],
+        ...fridgeItem,
+        updatedAt: new Date(),
+      };
     }
+
+    return this.fridgeItems[index];
   }
 
   async deleteFridgeItem(id: string): Promise<void> {

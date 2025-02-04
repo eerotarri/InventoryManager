@@ -18,7 +18,7 @@ function presenter(fridgeItem: FridgeItem | undefined) {
  * @throws { InputParseError } - If the input is invalid
  * @returns { Promise<FridgeItem | undefined> } - The created fridge item or undefined if the operation failed
  */
-export async function createFridgeItemController(
+export async function createFridgeItemsController(
   input: InsertFridgeItem
 ): Promise<FridgeItem | undefined> {
   // Validate the input with zod

@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+import { ResultSetHeader } from "mysql2/promise";
 import { IFridgeItemRepository } from "../../../lib/application/repositories/fridge-items.repository.interface";
 import {
   FridgeItem,
@@ -69,15 +70,33 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {
-      await connection.release();
+      connection.release();
     }
 
     return undefined;
   }
 
-  async addFridgeItem(
-    fridgeItem: InsertFridgeItem
-  ): Promise<FridgeItem | undefined> {
+  async getFridgeItem(id: string): Promise<FridgeItem | undefined> {
+    const connection = await this.getConnection();
+
+    const getItemQuery = `
+      SELECT * FROM items WHERE id = ?;
+    `;
+
+    try {
+      const [rows] = await connection.query(getItemQuery, [id]);
+      console.log(`Item ${id} fetched successfully.`);
+      return (rows as FridgeItem[])[0] as FridgeItem;
+    } catch (error) {
+      console.error("Error fetching item:", error);
+    } finally {
+      connection.release();
+    }
+
+    return undefined;
+  }
+
+  async addFridgeItem(fridgeItem: InsertFridgeItem): Promise<boolean> {
     const connection = await this.getConnection();
 
     const insertItemQuery = `
@@ -86,20 +105,25 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     `;
 
     try {
-      const item = await connection.query(insertItemQuery, [
+      const [data, _] = (await connection.query(insertItemQuery, [
         fridgeItem.name,
         fridgeItem.quantity,
         fridgeItem.suffix,
-      ]);
+      ])) as [ResultSetHeader, unknown];
+
+      return data.affectedRows > 0;
     } catch (error) {
       console.error("Error inserting item:", error);
     } finally {
-      await connection.release();
+      connection.release();
     }
-    return undefined;
+    return false;
   }
 
-  async updateFridgeItem(fridgeItem: FridgeItem): Promise<void> {
+  async updateFridgeItem(
+    id: string,
+    fridgeItem: InsertFridgeItem
+  ): Promise<FridgeItem | undefined> {
     const connection = await this.getConnection();
 
     const updateItemQuery = `
@@ -108,18 +132,23 @@ export class FridgeItemRepository implements IFridgeItemRepository {
       WHERE id = ?;
     `;
 
+    console.log("Updating item with ID:", id);
+    console.log("New item data:", fridgeItem);
+
     try {
-      await connection.query(updateItemQuery, [
+      const result = await connection.query(updateItemQuery, [
         fridgeItem.name,
         fridgeItem.quantity,
         fridgeItem.suffix,
-        fridgeItem.id,
+        id,
       ]);
       console.log("Item updated successfully.");
+      return await this.getFridgeItem(id);
     } catch (error) {
       console.error("Error updating item:", error);
     } finally {
-      await connection.release();
+      connection.release();
+      return undefined;
     }
   }
 
@@ -136,7 +165,7 @@ export class FridgeItemRepository implements IFridgeItemRepository {
     } catch (error) {
       console.error("Error deleting item:", error);
     } finally {
-      await connection.release();
+      connection.release();
     }
   }
 }

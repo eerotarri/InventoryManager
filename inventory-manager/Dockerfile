@@ -13,11 +13,12 @@ RUN npm install --legacy-peer-deps
 # Copy the rest of the application code to the working directory
 COPY . .
 
+# Build the application
+# Why do this when its just gonna use premade anyways?
+# RUN npm run build
+
 # Expose the port the app runs on
 EXPOSE 3000
-
-# Build the application
-RUN npm run build
 
 # Specify the command to run when the container starts
 CMD [ "npm", "run", "start" ]

@@ -17,6 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FridgeItem } from "@/lib/entities/models/fridge-item";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -27,12 +28,17 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  // Access the router programmatically
+  const router = useRouter();
+
+  // Initialize the table
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
+  // Custom logic to select color based on quantity
   const selectColor = (row: Row<TData>) => {
     const rowData = (row.original as FridgeItem).quantity;
     if (rowData == 0) return "bg-red-300";
@@ -40,6 +46,12 @@ export function DataTable<TData, TValue>({
     return "";
   };
 
+  // Navigate to item details page on row click
+  const handleRowClick = (id: string) => {
+    router.push(`/item/${id}`); // Prefetching works only on production builds
+  };
+
+  // Default table other than on commented parts
   return (
     <div className="bg-primary rounded-md border">
       <Table>
@@ -65,8 +77,18 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
+                // Added custom logic to select color based on quantity
                 className={`${selectColor(row)} border-slate-300`}
                 key={row.id}
+                // Added custom logic to navigate to item details page on row click
+                onClick={(e) => {
+                  // Prevent navigation to details page when delete button is clicked
+                  if ((e.target as HTMLElement).closest('.delete-button')) {
+                    e.stopPropagation();
+                    return;
+                  }
+                  handleRowClick((row.original as FridgeItem).id);
+                }}
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
