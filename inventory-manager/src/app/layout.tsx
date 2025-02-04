@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 // import packageJson from "../../package.json";
 import { inter } from "./fonts/fonts";
-import NavBar from "@/components/ui/navbar";
 
 export const metadata: Metadata = {
   title: "Mökki-inventaario NextJS",
@@ -18,7 +17,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`bg-background ${inter.className} antialiased}`}>
-        <NavBar />
         {children}
         {/* <p
           className={`${lusitana.className} antialiased`}
