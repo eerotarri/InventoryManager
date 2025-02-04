@@ -1,5 +1,8 @@
 import { InsertFridgeItem } from "@/lib/entities/models/fridge-item";
 
+// TODO: Move this to a config file
+const BACKEND_URL = "192.168.0.8:8000"
+
 export type ErrorMessage = {
   [key: string]: {
     _errors: string[];
@@ -7,13 +10,13 @@ export type ErrorMessage = {
 };
 
 export async function getFridgeItemsAction() {
-  const response = await fetch("http://localhost:8000/api/fridge-items");
+  const response = await fetch(`http://${BACKEND_URL}/api/fridge-items`);
   return response.json();
 }
 
 export async function createFridgeItemAction(newItem: InsertFridgeItem) {
   try {
-    const response = await fetch("http://localhost:8000/api/fridge-items", {
+    const response = await fetch(`http://${BACKEND_URL}/api/fridge-items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +39,7 @@ export async function updateFridgeItemAction({
 }) {
   try {
     const response = await fetch(
-      `http://localhost:8000/api/fridge-items/${id}`,
+      `http://${BACKEND_URL}/api/fridge-items/${id}`,
       {
         method: "PUT",
         headers: {
@@ -55,7 +58,7 @@ export async function updateFridgeItemAction({
 export async function deleteFridgeItemAction(id: string) {
   try {
     const response = await fetch(
-      `http://localhost:8000/api/fridge-items/${id}`,
+      `http://${BACKEND_URL}/api/fridge-items/${id}`,
       {
         method: "DELETE",
         headers: {

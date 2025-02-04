@@ -16,8 +16,6 @@ import {
 } from "@/components/ui/table";
 import { FridgeItem } from "@/lib/entities/models/fridge-item";
 
-import { useNavigate } from "react-router-dom";
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -27,7 +25,6 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  let navigate = useNavigate();
 
   const table = useReactTable({
     data,
@@ -40,11 +37,6 @@ export function DataTable<TData, TValue>({
     if (rowData == 0) return "bg-red-300";
     if (rowData <= 1) return "bg-amber-300";
     return "";
-  };
-
-  // Navigate to item details page on row click
-  const handleRowClick = (id: string) => {
-    navigate(`/item/${id}`);
   };
 
   return (
@@ -74,14 +66,6 @@ export function DataTable<TData, TValue>({
               <TableRow
                 className={`${selectColor(row)} border-slate-300`}
                 key={row.id}
-                onClick={(e) => {
-                  // Prevent navigation to details page when delete button is clicked
-                  if ((e.target as HTMLElement).closest('.delete-button')) {
-                    e.stopPropagation();
-                    return;
-                  }
-                  handleRowClick((row.original as FridgeItem).id);
-                }}
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
