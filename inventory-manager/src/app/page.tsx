@@ -4,17 +4,14 @@ import { columns } from "./_components/columns";
 import { getFridgeItemsController } from "@/lib/interface-adapters/controllers/fridge-items/get-fridge-items.controller";
 import Form from "./_components/form";
 import Image from "next/image";
-import { connection } from "next/server";
+
+export const revalidate = 3600; // 1 hour
 
 async function getFridgeItems() {
   return await getFridgeItemsController();
 }
 
 export default async function Home() {
-  // Ensure dynamic rendering to handle incoming user requests.
-  // This prevents the page from being statically rendered by default.
-  await connection();
-
   const items = await getFridgeItems();
 
   return (
