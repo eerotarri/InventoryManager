@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_expirePath as expirePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { InsertFridgeItem } from "@/lib/entities/models/fridge-item"; // Adjust the import path as needed
 import { FormState } from "@/app/actions";
@@ -24,7 +24,8 @@ export async function updateFridgeItemAction(
     const response = await udpateFridgeItemController(id, newItem);
 
     // Revalidate the product page to reflect the changes and redirect to the product page
-    revalidatePath("/");
+    expirePath("/");
+    expirePath(`/item/${id}`);
   } catch (error) {
     // Catch zod parse errors and return them to the client
     if (error instanceof InputParseError) {
