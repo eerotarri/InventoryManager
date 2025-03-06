@@ -3,7 +3,6 @@ import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
 import { getFridgeItemsController } from "@/lib/interface-adapters/controllers/fridge-items/get-fridge-items.controller";
 import Form from "./_components/form";
-import Image from "next/image";
 import { connection } from "next/server";
 
 async function getFridgeItems() {
