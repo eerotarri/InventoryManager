@@ -8,6 +8,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import dynamic from 'next/dynamic'
+import { Button } from '@/components/ui/button';
 
 // Simulate a heavy component that might be resource-intensive
 const SlowComponent = dynamic(() => import("./slow-component"), {
@@ -19,23 +20,9 @@ export default function CollapsibleWrapper() {
     const [showHeavyComponents, setShowHeavyComponents] = useState(false);
 
     return (
-        <div className="p-4">
-            <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                    <AccordionTrigger
-                        onClick={() => setShowHeavyComponents(!showHeavyComponents)}
-                    >
-                        Näytä suorituskykyä kuormittavat komponentit
-                    </AccordionTrigger>
-                    <AccordionContent>
-                        {showHeavyComponents && (
-                            <div className="space-y-4">
-                                <SlowComponent />
-                            </div>
-                        )}
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
+        <div className="flex flex-col gap-2 p-4">
+            {showHeavyComponents && <SlowComponent />}
+            <Button className="text-white" onClick={() => setShowHeavyComponents(!showHeavyComponents)}>Näytä raskas komponentti</Button>
         </div>
     );
 }
